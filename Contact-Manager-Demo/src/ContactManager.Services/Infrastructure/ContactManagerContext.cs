@@ -23,7 +23,7 @@ namespace ContactManager.Services.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
+
             modelBuilder.Entity<UserContact>(entity =>
             {
                 entity.Property(u => u.FirstName)
@@ -35,9 +35,36 @@ namespace ContactManager.Services.Infrastructure
                 .HasMaxLength(200)
                 .IsRequired()
                 .HasColumnType("nvarchar(200)");
+
+                entity.Property(u => u.Avatar)
+               .HasMaxLength(10)
+               .HasColumnType("nvarchar(10)");
+
+                entity.Property(u => u.AlternativeEmail)
+               .HasMaxLength(200)
+               .HasColumnType("nvarchar(200)");
+
+                entity.Property(u => u.Email)
+                .HasMaxLength(200)
+                .HasColumnType("nvarchar(200)");
+
+                entity.Property(u => u.PhoneNumber)
+                .HasMaxLength(20)
+                .HasColumnType("nvarchar(20)");
+
+                entity.Property(u => u.MobileNumber)
+                .HasMaxLength(20)
+                .HasColumnType("nvarchar(20)");
+
+                entity.Property(u => u.BioDetails)
+                .HasMaxLength(500)
+                .HasColumnType("nvarchar(500)");
+
+                entity.Property(u => u.Active)
+                .HasDefaultValue(true);
             });
 
-          
+
             modelBuilder.Entity<ContactNote>(entity =>
             {
                 entity.Property(c => c.NoteText)

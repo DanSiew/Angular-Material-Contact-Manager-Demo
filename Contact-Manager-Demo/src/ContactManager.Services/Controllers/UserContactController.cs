@@ -30,7 +30,7 @@ namespace ContactManager.Services.Controllers
         {
             try
             {
-                var userContacts = UserContactRepository.AllIncluding(u => u.ContactNotes);
+                var userContacts = UserContactRepository.AllIncluding(u => u.ContactNotes).Where(u => u.Active);
                 IEnumerable<UserContactModel> userContactsVM = Mapper.Map<IEnumerable<UserContact>, IEnumerable<UserContactModel>>(userContacts);
                 
                 return Json(userContactsVM);
@@ -66,6 +66,7 @@ namespace ContactManager.Services.Controllers
                     UserContact newContact = Mapper.Map<UserContact>(vm);
                     //_logger.LogInformation("Attempting to save into database", newNote);
                     //Save to the database
+                    newContact.Active = true;
                     UserContactRepository.Add(newContact);
                     UserContactRepository.Commit();
                     Response.StatusCode = (int)HttpStatusCode.Created;
@@ -91,8 +92,30 @@ namespace ContactManager.Services.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    UserContact userContact = UserContactRepository.GetSingle(n => n.Id == id);
+                    //_logger.LogInformation("Attempting to save into database", newNote);
+                    //Save to the database
+                    userContact.Active = false;
+                    UserContactRepository.Commit();
+                    Response.StatusCode = (int)HttpStatusCode.Created;
+                    return Ok(userContact);
+                }
+            }
+            catch (Exception ex)
+            {
+                // _logger.LogError("Failed to save to the database", ex);
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(new { Message = "Failed to Added", ErrorMessage = ex.ToString(), StackTrace = ex.StackTrace, ModelState = ModelState });
+
+            }
+            Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            return Json(new { Message = "Failed", ModelState = ModelState });
         }
     }
 }

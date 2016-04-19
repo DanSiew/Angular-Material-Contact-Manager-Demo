@@ -31,7 +31,29 @@
         </md-list>
     </md-content>
 
+    <md-fab-speed-dial md-direction="up"
+                       class="md-fling md-fab-bottom-right">
+        <md-fab-trigger>
+            <md-button class="md-fab" aria-label="">
+                <md-icon md-svg-icon="menu" aria-label=""></md-icon>
+            </md-button>
+        </md-fab-trigger>
+        <md-fab-actions>
+            <md-button class="md-fab md-raised md-mini"
+                       ng-click="vm.addUserContact($event)" aria-label="">
+                <ng-md-icon icon="add" aria-label=""></ng-md-icon>
+                <md-tooltip md-direction="left">Add contact</md-tooltip>
+            </md-button>
+            <md-button class="md-fab md-raised md-mini"
+                       ng-click="vm.removeUserContact($event)" aria-label="">
+                <ng-md-icon icon="delete" aria-label=""></ng-md-icon>
+                <md-tooltip md-direction="left">Delete contact</md-tooltip>
+            </md-button>
+        </md-fab-actions>
+    </md-fab-speed-dial> 
+    <!--
     <md-button class="md-fab md-fab-bottom-right" aria-label="" ng-click="vm.addUserContact($event)">
         <ng-md-icon icon="add" aria-label=""></ng-md-icon>
     </md-button>
+        -->
 </md-sidenav>

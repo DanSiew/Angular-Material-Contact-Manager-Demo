@@ -16,6 +16,7 @@ namespace ContactManager.Services.Models
         public string PhoneNumber { get; set; }
         public string MobileNumber { get; set; }
         public string BioDetails { get; set; }
+        public bool Active { get; set; }
 
         public virtual ICollection<ContactNote> ContactNotes { get; set; }
 

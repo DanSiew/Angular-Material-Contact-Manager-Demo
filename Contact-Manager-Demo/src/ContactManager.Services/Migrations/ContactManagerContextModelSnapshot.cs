@@ -39,13 +39,25 @@ namespace ContactManager.Services.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("AlternativeEmail");
+                    b.Property<bool>("Active")
+                        .HasAnnotation("Relational:DefaultValue", "True")
+                        .HasAnnotation("Relational:DefaultValueType", "System.Boolean");
 
-                    b.Property<string>("Avatar");
+                    b.Property<string>("AlternativeEmail")
+                        .HasAnnotation("MaxLength", 200)
+                        .HasAnnotation("Relational:ColumnType", "nvarchar(200)");
 
-                    b.Property<string>("BioDetails");
+                    b.Property<string>("Avatar")
+                        .HasAnnotation("MaxLength", 10)
+                        .HasAnnotation("Relational:ColumnType", "nvarchar(10)");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("BioDetails")
+                        .HasAnnotation("MaxLength", 500)
+                        .HasAnnotation("Relational:ColumnType", "nvarchar(500)");
+
+                    b.Property<string>("Email")
+                        .HasAnnotation("MaxLength", 200)
+                        .HasAnnotation("Relational:ColumnType", "nvarchar(200)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -57,9 +69,13 @@ namespace ContactManager.Services.Migrations
                         .HasAnnotation("MaxLength", 200)
                         .HasAnnotation("Relational:ColumnType", "nvarchar(200)");
 
-                    b.Property<string>("MobileNumber");
+                    b.Property<string>("MobileNumber")
+                        .HasAnnotation("MaxLength", 20)
+                        .HasAnnotation("Relational:ColumnType", "nvarchar(20)");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .HasAnnotation("MaxLength", 20)
+                        .HasAnnotation("Relational:ColumnType", "nvarchar(20)");
 
                     b.HasKey("Id");
                 });

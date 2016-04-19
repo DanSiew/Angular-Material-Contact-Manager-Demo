@@ -35,6 +35,20 @@ var ContactManagerApp;
             });
             return result;
         };
+        UserService.prototype.removeContact = function (input) {
+            var _this = this;
+            var config = {
+                headers: ''
+            };
+            var result = this.$http.delete(this.url + 'api/usercontact/' + input, config)
+                .success(function (response) {
+                return _this.updateHandler(response);
+            })
+                .error(function (errResponse) {
+                return _this.updateHandler(errResponse);
+            });
+            return result;
+        };
         UserService.prototype.addNote = function (input) {
             var _this = this;
             var data = JSON.stringify(input);
@@ -123,6 +137,42 @@ var ContactManagerApp;
                 targetEvent: $event
             }).then(function (clickedItem) {
                 clickedItem && console.log(clickedItem.name + ' clicked!');
+            });
+        };
+        MainController.prototype.removeUserContact = function ($event) {
+            var _this = this;
+            var self = this;
+            var confirm = this.$mdDialog.confirm()
+                .title('Are you sure you want to delete the selected contact ' + this.selected.name + ' ?')
+                .textContent('The contact will be deleted, you can\'t undo this action.')
+                .targetEvent($event)
+                .ok('Yes')
+                .cancel('No');
+            this.$mdDialog.show(confirm).then(function () {
+                var foundIndex = _this.users.indexOf(_this.selected);
+                _this.userService.removeContact(_this.selected.id)
+                    .then(function (result) {
+                    var data = result.data;
+                    console.log('remove note', data);
+                    _this.users.splice(foundIndex, 1);
+                    if (self.users.length > 0) {
+                        self.selected = self.users[0];
+                    }
+                    else {
+                        self.selected = null;
+                    }
+                    self.openToast('Contact deleted');
+                }).catch(function (errResult) {
+                    //on error
+                    var data = errResult.data;
+                    _this.hasError = true;
+                    _this.errorMessage = data.message;
+                    _this.openToast(_this.errorMessage);
+                    console.log('error', _this.errorMessage);
+                    if (data.modelState !== undefined) {
+                        _this.modelErrors = data.modelState.error;
+                    }
+                });
             });
         };
         MainController.prototype.addUserContact = function ($event) {

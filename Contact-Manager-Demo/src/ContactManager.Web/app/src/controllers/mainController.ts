@@ -67,6 +67,45 @@ module ContactManagerApp {
             })
         }
 
+        removeUserContact($event) {
+            var self = this;
+            var confirm = this.$mdDialog.confirm()
+                .title('Are you sure you want to delete the selected contact ' + this.selected.name + ' ?')
+                .textContent('The contact will be deleted, you can\'t undo this action.')
+                .targetEvent($event)
+                .ok('Yes')
+                .cancel('No');
+
+            this.$mdDialog.show(confirm).then(() => {
+                var foundIndex = this.users.indexOf(this.selected);
+                this.userService.removeContact(this.selected.id)
+                    .then((result: any) => {
+                        var data = result.data;
+                        console.log('remove note', data);
+                        this.users.splice(foundIndex, 1);
+                        if (self.users.length > 0) {
+                            self.selected = self.users[0];
+                        } else {
+                            self.selected = null;
+                        }
+                        self.openToast('Contact deleted');
+
+                    }).catch((errResult: any) => {
+                        //on error
+                        var data = errResult.data;
+                        this.hasError = true;
+                        this.errorMessage = data.message;
+                        this.openToast(this.errorMessage);
+                        console.log('error', this.errorMessage);
+
+                        if (data.modelState !== undefined) {
+                            this.modelErrors = data.modelState.error;
+                        }
+                    });
+                
+            })
+        }
+
         addUserContact($event) {
             var self = this;
             var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));

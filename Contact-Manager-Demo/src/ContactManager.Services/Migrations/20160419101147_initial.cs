@@ -5,7 +5,7 @@ using Microsoft.Data.Entity.Metadata;
 
 namespace ContactManager.Services.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,14 +15,15 @@ namespace ContactManager.Services.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    AlternativeEmail = table.Column<string>(nullable: true),
-                    Avatar = table.Column<string>(nullable: true),
-                    BioDetails = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
+                    Active = table.Column<bool>(nullable: false, defaultValue: true),
+                    AlternativeEmail = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    Avatar = table.Column<string>(type: "nvarchar(10)", nullable: true),
+                    BioDetails = table.Column<string>(type: "nvarchar(500)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     FirstName = table.Column<string>(type: "nvarchar(200)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(200)", nullable: false),
-                    MobileNumber = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true)
+                    MobileNumber = table.Column<string>(type: "nvarchar(20)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", nullable: true)
                 },
                 constraints: table =>
                 {

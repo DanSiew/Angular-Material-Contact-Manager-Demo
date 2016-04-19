@@ -5,6 +5,7 @@ module ContactManagerApp {
     export interface IUserService {
         queryAll(): ng.IPromise<UserContact>;
         addContact(input: UserContact): any;
+        removeContact(input: number): any;
         addNote(input: ContactNote): any;
         removeNote(input: number): any;
         selectedUser: UserContact;
@@ -50,6 +51,18 @@ module ContactManagerApp {
 
         }
 
+        removeContact(input: number): any {
+            var config: any = {
+                headers: ''
+            };
+            var result: ng.IPromise<any> = this.$http.delete(this.url + 'api/usercontact/' + input, config)
+                .success((response: ng.IHttpPromiseCallbackArg<ContactNote>):
+                    ng.IPromise<any> => this.updateHandler(response))
+                .error((errResponse: ng.IHttpPromiseCallback<Error>):
+                    ng.IPromise<any> => this.updateHandler(errResponse))
+            return result;
+
+        }
 
         addNote(input: ContactNote): any {
             var data = JSON.stringify(input);
